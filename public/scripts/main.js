@@ -1,3 +1,4 @@
+//Load Libraries
 require.config({
   paths: {
     'jquery': 'vendor/jquery/jquery',
@@ -19,13 +20,13 @@ require.config({
   }
 });
 
-
+//Defines gmaps seperatly because using require config caused failure.  Saves library to window
 define('gmaps', ['async!http://maps.google.com/maps/api/js?v=3&sensor=true'],
 function(){
     return window.google.maps;
 });
 
-
+//Loads Application View
 require([
   'views/app'
 

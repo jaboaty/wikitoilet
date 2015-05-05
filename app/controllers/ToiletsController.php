@@ -7,7 +7,7 @@ class ToiletsController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index()  //Returns JSON FEED of All items with in range of user latitude and longitutde
 	{
         //return View::make('toilets.index');
 
@@ -40,7 +40,7 @@ class ToiletsController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store()  //Creates a new Location and saves to Database
 	{
 
 

@@ -18,24 +18,28 @@ define(['backbone',
     latitude: "",
     longitude: "",
 
+    //Inits listener Events
     events: {
       "click #addtoilet" : "addtoilet"
     },
 
     initialize: function() {
+      //Handle shared variables
       _.bindAll(this,'listener','error','getToilets');
 
-
+      //Create Google Map
       var mapOptions = {
         center: new gmaps.LatLng(-34.397, 150.644),
         zoom: 16,
         mapTypeId: gmaps.MapTypeId.ROADMAP
       };
       this.map = new gmaps.Map(this.map_el, mapOptions);
+
+      //Watches user location
       navigator.geolocation.watchPosition(this.listener,this.error, { enableHighAccuracy:true});
 
       
-
+      //Adds "Add Toilet Button"
       this.addtoiletbutton = new AddToiletButton();
       this.addtoiletbutton.render();
       $(document.body).append(this.addtoiletbutton.el);
@@ -43,7 +47,7 @@ define(['backbone',
     },
 
 
-
+    //Gets user location and calls for list of toilets
     listener: function(position){
         newPosition = new gmaps.LatLng(position.coords.latitude, position.coords.longitude);
         this.latitude = position.coords.latitude;
@@ -52,6 +56,7 @@ define(['backbone',
         this.getToilets();
     },
 
+    //Restful Call to application to create a new toilet
     addtoilet: function(e){
       e.preventDefault();
       this.newToilet = this.toilets.collection.create({
@@ -84,7 +89,7 @@ define(['backbone',
           }  
     },
 
-
+    //Gets toilets within range and adds to collection
     getToilets: function(){
         var self = this;
         this.toilets = new Toilets({
@@ -98,6 +103,7 @@ define(['backbone',
             longitude: self.longitude
           },
           success: function() {
+          //Loads succesful toilets to map
            self.toilets.collection.each(function(model) {
               model.cords = new gmaps.LatLng(model.get("latitude"), model.get("longitude"));
               model.marker = new gmaps.Marker({
